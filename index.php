@@ -424,7 +424,8 @@ class cf_page_permalink
 		$posts = get_posts($args);
 		foreach ($posts as $post) {
 			if ( $custom = get_post_meta( $post->ID, '_' . $this->tag, true ) ) {
-				$rewrite[$custom . '/?$'] = 'index.php?' . ('page' === $post->post_type ? 'page_id' : 'p') . '=' . $post->ID;
+				$custom = trailingslashit($custom);
+				$rewrite[$custom . '?$'] = 'index.php?' . ('page' === $post->post_type ? 'page_id' : 'p') . '=' . $post->ID;
 			}
 		}
 
