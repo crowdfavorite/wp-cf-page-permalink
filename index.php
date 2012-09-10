@@ -50,6 +50,7 @@ class cf_page_permalink
 		add_action( 'init', array( &$this, 'init' ), 999 );
 		add_action( 'admin_init', array( &$this, 'admin_init' ) );
 		add_filter('cfpp_rewrite_rules', array($this, 'cfpp_rewrite_rules'));
+		add_filter('rewrite_rules_array', array($this, 'cfpp_rewrite_rules_array'), 999);
 	}
 
 	/**
@@ -411,7 +412,7 @@ class cf_page_permalink
 		$wp_rewrite->add_permastruct('cfpp', '%cfpp%');
 	}
 
-	function cfpp_rewrite_rules($rewrite) {
+	function cfpp_rewrite_rules($rewrite = array()) {
 		global $wp_rewrite;
 
 		$rewrite = array();
@@ -427,7 +428,24 @@ class cf_page_permalink
 			}
 		}
 
-		return $rewrite;
+		$this->structures = $rewrite;
+
+		return array();
+	}
+
+
+	function cfpp_rewrite_rules_array($rules) {
+		if (empty($this->structures)) {
+			$this->cfpp_rewrite_rules();
+		}
+		if (!empty($this->structures)) {
+			foreach (array_keys(array_intersect_key($this->structures, $rules)) as $key) {
+				unset($rules[$key]);
+			}
+			return array_merge($this->structures, $rules);
+		}
+
+		return $rules;
 	}
 
 	/**
