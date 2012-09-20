@@ -419,7 +419,8 @@ class cf_page_permalink
 
 		$args = array(
 			'post_type' => $this->post_types(),
-			'meta_key' => '_' . $this->tag
+			'meta_key' => '_' . $this->tag,
+			'posts_per_page' => -1
 		);
 		$posts = get_posts($args);
 		foreach ($posts as $post) {
