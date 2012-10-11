@@ -143,6 +143,8 @@ class cf_page_permalink
 	 * Generates the custom permalink for an individual post, page or custom
 	 * post type.
 	 *
+	 * Custom permalinks only apply to posts in "publish" status.
+	 *
 	 * @param string $permalink
 	 * @param integer|object $page
 	 */
@@ -156,6 +158,9 @@ class cf_page_permalink
 			$page_obj = get_post($page);
 		}
 		if (!in_array($page_obj->post_type, $this->post_types())) {
+			return $permalink;
+		}
+		if ("publish" !== $page_obj->post_status) {
 			return $permalink;
 		}
 
