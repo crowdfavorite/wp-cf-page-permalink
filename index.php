@@ -160,9 +160,6 @@ class cf_page_permalink
 		if (!in_array($page_obj->post_type, $this->post_types())) {
 			return $permalink;
 		}
-		if ("publish" !== $page_obj->post_status) {
-			return $permalink;
-		}
 
 		if ( ( 'page' == get_option( 'show_on_front' ) )
 			&& ( $page == get_option( 'page_on_front' ) )
@@ -424,6 +421,7 @@ class cf_page_permalink
 
 		$args = array(
 			'post_type' => $this->post_types(),
+			'post_status' => array('publish', 'private'),
 			'meta_key' => '_' . $this->tag,
 			'posts_per_page' => -1
 		);
